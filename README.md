@@ -21,12 +21,18 @@ A trunk interface allows Proxmox to handle multiple VLANs on a single physical i
    - **IP Address / Gateway:** Leave empty if this interface is only for VMs.
    - **Save and apply changes.**
 
+![vswitch_trunk](https://github.com/user-attachments/assets/e965aa58-a2a2-4959-8e92-db576cd6cdad)
+  
+
+
 ### **1.2 Configure the VM to Use a VLAN**
 When creating or modifying a VM:
 - Go to **Hardware** → **Network Device**.
 - Select `vmbr1` as the bridge.
 - In the **VLAN Tag** field, enter the VLAN ID where the VM should operate.
 - Save the changes and start the VM.
+
+![add vlan on vm](https://github.com/user-attachments/assets/78984dd2-165b-4064-91d2-c4bf864382a1)
 
 ---
 
@@ -70,3 +76,6 @@ Add the following line to `/etc/fstab` for automatic mounting at startup:
    - **ID:** `iso_storage`
    - **Directory Path:** `/mnt/iso_storage`
    - **Content:** `ISO Image`
+  
+![iso_add](https://github.com/user-attachments/assets/693f2b7d-e804-482c-bb63-ba1de835f2fc)
+
