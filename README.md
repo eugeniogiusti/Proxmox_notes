@@ -1,4 +1,4 @@
-# Guide: Configuring a Trunk Interface on Proxmox and Mounting a Disk with ISO
+# Guide: Configuring a Trunk Interface on Proxmox 
 
 This guide covers two important aspects:
 1. **Configuring a network interface as a trunk on a Proxmox server.**
@@ -29,6 +29,8 @@ When creating or modifying a VM:
 - Save the changes and start the VM.
 
 ---
+
+# Mounting a Disk with ISO in Proxmox
 
 ## **2. Mounting an LVM Disk with ISO in Proxmox**
 
