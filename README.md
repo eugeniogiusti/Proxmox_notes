@@ -56,22 +56,22 @@ vgchange -ay <volume-group-name>
 
 ### **2.2 Create the Mount Point and Mount the Volume**
 ```bash
-mkdir -p /mnt/iso_storage
-mount /dev/<volume-group-name>/<logical-volume-name> /mnt/iso_storage
+mkdir -p /iso
+mount /dev/<volume-group-name>/<logical-volume-name> /iso
 ```
 
 ### **2.3 Configure Automatic Mounting**
 Add the following line to `/etc/fstab` for automatic mounting at startup:
 ```bash
-/dev/<volume-group-name>/<logical-volume-name> /mnt/iso_storage ext4 defaults 0 2
+/dev/<volume-group-name>/<logical-volume-name> /iso ext4 defaults 0 2
 ```
 
 ### **2.4 Add ISO Storage to Proxmox**
 1. Go to **Proxmox Web UI** → **Datacenter** → **Storage**.
 2. Click **Add** → **Directory**.
 3. Set:
-   - **ID:** `iso_storage`
-   - **Directory Path:** `/mnt/iso_storage`
+   - **ID:** `iso_images`
+   - **Directory Path:** `/iso`
    - **Content:** `ISO Image`
   
 ![iso_add](https://github.com/user-attachments/assets/693f2b7d-e804-482c-bb63-ba1de835f2fc)
