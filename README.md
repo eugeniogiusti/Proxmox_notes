@@ -28,7 +28,8 @@ When creating or modifying a VM:
 - In the **VLAN Tag** field, enter the VLAN ID where the VM should operate.
 - Save the changes and start the VM.
 
-![ksnip_20250131-221000](https://github.com/user-attachments/assets/afdc5711-223c-4b70-ab24-7debdf61d719)
+![ksnip_20250131-221000](https://github.com/user-attachments/assets/a5d62ee3-abe2-4dfb-be34-924e115ba07c)
+
 
 ---
 
