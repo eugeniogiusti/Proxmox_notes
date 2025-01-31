@@ -70,8 +70,6 @@ Add the following line to `/etc/fstab` for automatic mounting at startup:
    - **ID:** `iso_storage`
    - **Directory Path:** `/mnt/iso_storage`
    - **Content:** `ISO Image`
-4. Save and verify that the ISOs are available under **Proxmox → Local (iso_storage)**.
-
 ---
 
 Now your Proxmox server is configured with a VLAN-aware trunk interface, and the disk with ISOs is mounted and accessible. 🚀
