@@ -11,7 +11,7 @@ A trunk interface allows Proxmox to handle multiple VLANs on a single physical i
 ### **1.1 Configure a VLAN-Aware Linux Bridge**
 1. Go to **Proxmox Web UI** → **Datacenter** → **Proxmox Node** → **Network**.
 2. Click **Create** → **Linux Bridge** and configure:
-   - **Name:** `vmbr2`
+   - **Name:** `vmbr1`
    - **Bridge ports:** `eth0`
    - **VLAN aware:** ✅ (Enabled)
    - **IP Address / Gateway:** Leave empty if this interface is only for VMs.
