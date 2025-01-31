@@ -1,10 +1,6 @@
 # Guide: Configuring a Trunk Interface on Proxmox 
 
-This guide covers two important aspects:
-1. **Configuring a network interface as a trunk on a Proxmox server.**
-2. **Mounting an LVM disk with ISO images for use in Proxmox.**
-
----
+--
 
 ## **1. Configuring a Trunk Network Interface on Proxmox**
 
