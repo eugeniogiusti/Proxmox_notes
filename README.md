@@ -17,7 +17,7 @@ A trunk interface allows Proxmox to handle multiple VLANs on a single physical i
    - **IP Address / Gateway:** Leave empty if this interface is only for VMs.
    - **Save and apply changes.**
 
-![vswitch_trunk](https://github.com/user-attachments/assets/e965aa58-a2a2-4959-8e92-db576cd6cdad)
+
   
 
 
