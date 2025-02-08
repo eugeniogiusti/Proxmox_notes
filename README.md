@@ -76,3 +76,156 @@ Add the following line to `/etc/fstab` for automatic mounting at startup:
   
 ![iso_add](https://github.com/user-attachments/assets/693f2b7d-e804-482c-bb63-ba1de835f2fc)
 
+
+
+# Setting Up ZFS Storage with RAID-Z on Proxmox
+
+This guide explains how to configure **ZFS storage with RAID-Z (RAID5 equivalent)** on a **Proxmox server** using **three disks**.
+
+---
+
+## **Prerequisites**
+- A running **Proxmox VE** server.
+- Three **unused disks** (e.g., `/dev/sdb`, `/dev/sdc`, `/dev/sdd`).
+- At least **8GB of RAM** (ZFS recommends 1GB per TB of storage).
+
+---
+
+## **Step 1: Identify Available Disks**
+Run the following command to list available disks:
+
+```sh
+lsblk
+```
+
+Example output:
+```
+sda      500G  (OS Disk)
+sdb      1TB   (New Disk 1)
+sdc      1TB   (New Disk 2)
+sdd      1TB   (New Disk 3)
+```
+Ensure the disks are **not** mounted and do not contain important data.
+
+---
+
+## **Step 2: Create the ZFS Pool**
+To create a ZFS pool named `zpool_vmstorage` with RAID-Z (RAID5 equivalent):
+
+```sh
+zpool create -f zpool_vmstorage raidz /dev/sdb /dev/sdc /dev/sdd
+```
+
+This will:
+- Create a **RAID-Z (RAID5) pool** with redundancy (1 disk failure tolerance).
+- Name the pool `zpool_vmstorage`.
+- Use `/dev/sdb`, `/dev/sdc`, and `/dev/sdd`.
+
+To verify the pool:
+```sh
+zpool status
+```
+
+---
+
+## **Step 3: Configure ZFS in Proxmox**
+### **Add the ZFS Storage**
+1. Open the **Proxmox Web UI**.
+2. Go to **Datacenter → Storage**.
+3. Click **Add → ZFS**.
+4. Set the following:
+   - **ID:** `zfs_vmstorage`
+   - **Pool:** `zpool_vmstorage`
+   - **Thin provisioning:** ✅ Enabled
+5. Click **Add**.
+
+---
+
+## **Step 4: Enable Compression (Optional, Recommended)**
+ZFS supports compression, which saves space and improves performance. Enable LZ4 compression:
+```sh
+zfs set compression=lz4 zpool_vmstorage
+```
+Verify:
+```sh
+zfs get compression zpool_vmstorage
+```
+
+---
+
+## **Step 5: Enable Deduplication (Optional, Use with Caution)**
+If you have a **lot of duplicate data** and enough RAM, enable deduplication:
+```sh
+zfs set dedup=on zpool_vmstorage
+```
+Check status:
+```sh
+zfs get dedup zpool_vmstorage
+```
+❗ **Warning:** Deduplication requires a lot of RAM and should be enabled only if needed.
+
+---
+
+## **Step 6: Test Snapshots**
+Snapshots allow quick recovery. To create a snapshot:
+```sh
+zfs snapshot zpool_vmstorage@snapshot1
+```
+List snapshots:
+```sh
+zfs list -t snapshot
+```
+Rollback to a snapshot:
+```sh
+zfs rollback zpool_vmstorage@snapshot1
+```
+
+---
+
+## **Step 7: Enable TRIM (For SSDs)**
+If you are using SSDs, enable TRIM for better performance:
+```sh
+zpool set autotrim=on zpool_vmstorage
+```
+Verify:
+```sh
+zpool get autotrim zpool_vmstorage
+```
+
+---
+
+## **Step 8: Set Up Automatic Scrubbing**
+Scrubbing checks for data integrity. Schedule a cron job:
+```sh
+crontab -e
+```
+Add this line to run scrubbing every Sunday at midnight:
+```
+0 0 * * 0 /sbin/zpool scrub zpool_vmstorage
+```
+
+---
+
+## **Conclusion**
+Your Proxmox server is now configured with **ZFS RAID-Z storage**, supporting:
+✅ Snapshots  
+✅ Compression  
+✅ Redundancy (RAID5-like)  
+✅ TRIM (for SSDs)  
+
+You can now store **VMs and containers** safely on your ZFS pool.
+
+---
+### **Troubleshooting**
+- Check the status of your pool:
+  ```sh
+  zpool status
+  ```
+- If a disk fails, replace it and run:
+  ```sh
+  zpool replace zpool_vmstorage <old-disk> <new-disk>
+  ```
+- If running out of space, add more disks:
+  ```sh
+  zpool add zpool_vmstorage /dev/sdX
+  ```
