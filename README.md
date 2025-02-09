@@ -230,3 +230,148 @@ You can now store **VMs and containers** safely on your ZFS pool.
   ```sh
   zpool add zpool_vmstorage /dev/sdX
   ```
+
+
+# QEMU Guest Agent Installation Guide for Proxmox VE
+
+This guide provides step-by-step instructions for installing and configuring the QEMU Guest Agent on both Linux and Windows virtual machines running on Proxmox VE.
+
+## What is QEMU Guest Agent?
+
+The QEMU Guest Agent is a daemon that runs inside the virtual machine and enables better integration between the host and guest, allowing for:
+- Graceful shutdown and reboot
+- File system quiescing for better snapshots
+- System information reporting
+- Network configuration
+- Memory statistics reporting
+
+## Prerequisites
+
+- Running Proxmox VE installation
+- Virtual machine with either Linux or Windows operating system
+- Administrative access to the virtual machine
+- Internet connection for package installation
+
+## Enabling QEMU Guest Agent in Proxmox VE
+
+1. Shut down the virtual machine
+2. In the Proxmox web interface, select your VM
+3. Go to "Hardware"
+4. Click "Add" and select "QEMU Guest Agent"
+5. Start the virtual machine
+
+## Linux Installation
+
+### Debian/Ubuntu-based Systems
+
+```bash
+# Update package list
+sudo apt update
+
+# Install QEMU Guest Agent
+sudo apt install qemu-guest-agent
+
+# Start the service
+sudo systemctl start qemu-guest-agent
+
+# Enable the service to start on boot
+sudo systemctl enable qemu-guest-agent
+
+# Verify the service status
+sudo systemctl status qemu-guest-agent
+```
+
+### RHEL/CentOS/Fedora-based Systems
+
+```bash
+# Install QEMU Guest Agent
+sudo dnf install qemu-guest-agent
+
+# Start the service
+sudo systemctl start qemu-guest-agent
+
+# Enable the service to start on boot
+sudo systemctl enable qemu-guest-agent
+
+# Verify the service status
+sudo systemctl status qemu-guest-agent
+```
+
+### Arch Linux
+
+```bash
+# Install QEMU Guest Agent
+sudo pacman -S qemu-guest-agent
+
+# Start the service
+sudo systemctl start qemu-guest-agent
+
+# Enable the service to start on boot
+sudo systemctl enable qemu-guest-agent
+
+# Verify the service status
+sudo systemctl status qemu-guest-agent
+```
+
+## Windows Installation
+
+### Method 1: VirtIO ISO
+
+1. Download the latest VirtIO ISO from: https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio-win-gt-x64/
+2. Add the ISO to your VM's CD/DVD drive in Proxmox
+3. Mount the CD drive in Windows
+4. Navigate to guest-agent/qemu-ga-x86_64.msi
+5. Double-click the MSI file and follow the installation wizard
+6. Restart the virtual machine
+
+### Method 2: Chocolatey Package Manager
+
+```powershell
+# Install Chocolatey if not already installed
+Set-ExecutionPolicy Bypass -Scope Process -Force
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+# Install QEMU Guest Agent
+choco install qemu-guest-agent -y
+```
+
+## Verification
+
+### Linux
+To verify the guest agent is working:
+```bash
+sudo systemctl status qemu-guest-agent
+```
+
+Expected output should show "active (running)".
+
+### Windows
+1. Open Services (services.msc)
+2. Look for "QEMU Guest Agent"
+3. Status should show "Running"
+
+## Troubleshooting
+
+### Linux
+1. Check if the service is running:
+```bash
+ps aux | grep qemu-ga
+```
+
+2. Check system logs:
+```bash
+journalctl -u qemu-guest-agent
+```
+
+### Windows
+1. Check Windows Event Viewer for any errors
+2. Verify the service is running:
+```powershell
+Get-Service QEMU-GA
+```
+
+### Useful link
+Guide: https://pve.proxmox.com/wiki/Qemu-guest-agent
+Video Linux:https://www.youtube.com/watch?v=ZpEYkA4C4jY
+Video Windows:https://www.youtube.com/watch?v=0iTMk56V7hk
