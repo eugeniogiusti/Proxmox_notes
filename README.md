@@ -372,6 +372,6 @@ Get-Service QEMU-GA
 ```
 
 ### Useful link
-Guide: https://pve.proxmox.com/wiki/Qemu-guest-agent
-Video Linux:https://www.youtube.com/watch?v=ZpEYkA4C4jY
-Video Windows:https://www.youtube.com/watch?v=0iTMk56V7hk
+- Guide: https://pve.proxmox.com/wiki/Qemu-guest-agent
+- Video Linux:https://www.youtube.com/watch?v=ZpEYkA4C4jY
+- Video Windows:https://www.youtube.com/watch?v=0iTMk56V7hk
